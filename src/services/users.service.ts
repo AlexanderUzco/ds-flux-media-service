@@ -1,8 +1,18 @@
-import { User, UserBasicInfo } from '../interfaces/user.interface';
+import { User } from '../interfaces/user.interface';
 import UserModel from '../models/users';
 
+const findUserByEmail = async (email: string) => {
+  const user = await UserModel.findOne({ email });
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  return user;
+};
+
 const signinUserBase = async (user: User) => {
-  const { email, password, username } = user;
+  const { email, password, username, role } = user;
 
   const userExists = await UserModel.findOne({ email });
 
@@ -14,6 +24,7 @@ const signinUserBase = async (user: User) => {
     username,
     email,
     password,
+    role,
   });
 
   return userData;
@@ -48,4 +59,9 @@ const verifyAuthenticatedUser = async (userID: string | undefined) => {
   return userData;
 };
 
-export { signinUserBase, checkExistUser, verifyAuthenticatedUser };
+export {
+  signinUserBase,
+  checkExistUser,
+  verifyAuthenticatedUser,
+  findUserByEmail,
+};

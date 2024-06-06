@@ -1,12 +1,11 @@
 import { Request, Response } from 'express';
-import { handleErrorHttp } from '../utils/erros.handle';
+import { handleErrorHttp } from '../utils/errors';
 import {
   checkExistUser,
   signinUserBase,
   verifyAuthenticatedUser,
 } from '../services/users.service';
 import { clearToken, generateToken } from '../utils/auth';
-import UserModel from '../models/users';
 
 const signinUser = async (req: Request, res: Response) => {
   try {
@@ -40,7 +39,9 @@ const signupUser = async (req: Request, res: Response) => {
 
     res.status(201).json({ id, email, username, role });
   } catch (error) {
-    handleErrorHttp(res, 'Error getting user');
+    const errorMessage =
+      (error instanceof Error && error.message) || 'Error signup user';
+    handleErrorHttp(res, errorMessage);
   }
 };
 

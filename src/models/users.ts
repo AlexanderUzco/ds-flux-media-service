@@ -1,6 +1,7 @@
 import { Schema, model, Types, Model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { User } from '../interfaces/user.interface';
+import { SALT_ROUNDS_PASSWORD } from '../enviroments/app.enviroment';
 
 const UserSchema = new Schema<User>(
   {
@@ -36,7 +37,7 @@ UserSchema.pre('save', async function (next) {
     next();
   }
 
-  const salt = await bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt(SALT_ROUNDS_PASSWORD);
   this.password = await bcrypt.hash(this.password, salt);
 });
 

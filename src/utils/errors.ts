@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { Error as MoongoseError } from 'mongoose';
 
 // Helper function to format Mongoose validation errors
 const formatMongooseValidationError = (error: any) => {
@@ -14,26 +15,25 @@ const formatMongooseValidationError = (error: any) => {
   return formattedErrors;
 };
 
-const handleErrorHttp = (
-  res: Response,
-  errorMessage: string,
-  errorRaw?: any
-) => {
+const handleErrorHttp = (res: Response, message: string, errorRaw?: any) => {
   res.status(500);
 
-  if (errorRaw.name && errorRaw.name == 'ValidationError') {
-    res.status(400).send({
-      message: 'Validation Error',
+  if (!errorRaw) {
+    res.status(500).send({
+      message: message,
+    });
+  }
+
+  if (errorRaw instanceof MoongoseError) {
+    return res.status(400).send({
+      message: errorRaw.name,
       errors: formatMongooseValidationError(errorRaw),
     });
-  } else {
+  }
+
+  if (errorRaw instanceof Error) {
     res.status(500).send({
-      message: errorMessage,
-      error: {
-        message: errorRaw.message,
-        name: errorRaw.name,
-        stack: errorRaw.stack,
-      },
+      message: errorRaw.message,
     });
   }
 };
