@@ -16,8 +16,6 @@ const formatMongooseValidationError = (error: any) => {
 };
 
 const handleErrorHttp = (res: Response, message: string, errorRaw?: any) => {
-  res.status(500);
-
   if (!errorRaw) {
     res.status(500).send({
       message: message,

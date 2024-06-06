@@ -8,7 +8,12 @@ import { Role } from '../interfaces/user.interface';
 const authenticate = (roles?: Role[]) =>
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
-      let token = req.cookies.jwt;
+      let token = req.headers.authorization;
+
+      // Remove Bearer from string
+      if (token?.startsWith('Bearer ')) {
+        token = token.slice(7, token.length);
+      }
 
       if (!token) {
         throw new AuthenticationError('Token not found');

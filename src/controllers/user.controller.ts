@@ -17,9 +17,9 @@ const signinUser = async (req: Request, res: Response) => {
 
     const { id, username, email } = responseSignUser;
 
-    generateToken(res, id);
+    const token = generateToken(res, id);
 
-    res.status(201).json({ id, username, email });
+    res.status(201).json({ id, username, email, token });
   } catch (error) {
     handleErrorHttp(res, 'Error signin user', error);
   }
@@ -35,9 +35,9 @@ const signupUser = async (req: Request, res: Response) => {
 
     const { id, email, username, role } = responseExistUser;
 
-    generateToken(res, id);
+    const token = generateToken(res, id);
 
-    res.status(201).json({ id, email, username, role });
+    res.status(201).json({ id, email, username, role, token });
   } catch (error) {
     const errorMessage =
       (error instanceof Error && error.message) || 'Error signup user';

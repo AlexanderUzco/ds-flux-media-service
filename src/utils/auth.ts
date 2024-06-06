@@ -34,14 +34,14 @@ const generateToken = (res: Response, userId: string) => {
     expiresIn: '1d',
   });
 
-  //console.log('token', token);
-
   res.cookie('jwt', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV !== 'development',
     sameSite: 'strict',
     maxAge: 60 * 60 * 1000,
   });
+
+  return token;
 };
 
 const clearToken = (res: Response) => {
