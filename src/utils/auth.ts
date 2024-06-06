@@ -30,11 +30,11 @@ const generateToken = (res: Response, userId: string) => {
   const jwtSecret = JWT_SECRET;
 
   const token = jwt.sign({ userId }, jwtSecret, {
-    // expiresIn: 1 year
-    expiresIn: 60 * 60 * 24 * 365,
+    // expiresIn: 1 day
+    expiresIn: '1d',
   });
 
-  console.log('token', token);
+  //console.log('token', token);
 
   res.cookie('jwt', token, {
     httpOnly: true,

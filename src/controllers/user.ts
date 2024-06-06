@@ -34,11 +34,11 @@ const signupUser = async (req: Request, res: Response) => {
 
     if (!responseExistUser) throw new Error('User dont exist');
 
-    const { id, email, username } = responseExistUser;
+    const { id, email, username, role } = responseExistUser;
 
     generateToken(res, id);
 
-    res.status(201).json({ id, email, username });
+    res.status(201).json({ id, email, username, role });
   } catch (error) {
     handleErrorHttp(res, 'Error getting user');
   }

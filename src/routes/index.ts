@@ -14,7 +14,6 @@ readdirSync(PATH_ROUTER).forEach((filename) => {
   if (cleanName == 'index') return;
 
   import(`./${cleanName}`).then((module) => {
-    console.log(`Adding route /${cleanName}`);
     router.use(`/${cleanName}`, module.router);
   });
 });

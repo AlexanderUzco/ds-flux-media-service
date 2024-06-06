@@ -30,8 +30,6 @@ const authenticate = (roles?: Role[]) =>
         throw new AuthenticationError('User not found');
       }
 
-      console.log('user', user);
-
       if (user.role !== 'ADMIN' && roles) {
         if (!roles.includes(user.role)) {
           throw new AuthenticationError('Unauthorized: Role not allowed');
