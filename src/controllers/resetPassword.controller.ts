@@ -3,7 +3,7 @@ import { handleErrorHttp } from '../utils/errors';
 import {
   createResetPassword,
   verifyResetPassword,
-} from '../services/resetPassword';
+} from '../services/resetPassword.service';
 import { getBaseUrl } from '../utils/common';
 import sendResetPassowrdEmail from '../utils/email/resetPasswordEmail';
 
@@ -12,8 +12,6 @@ const requestResetPassword = async (req: Request, res: Response) => {
     const { email } = req.body;
 
     const token = await createResetPassword(email);
-
-    // TODO: Send email with resetToken
 
     await sendResetPassowrdEmail({
       to: email,

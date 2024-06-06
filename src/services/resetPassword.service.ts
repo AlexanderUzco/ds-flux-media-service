@@ -1,8 +1,5 @@
-import bcrypt from 'bcryptjs';
-import { ResetPassword } from '../interfaces/resetPassword.interface';
-import ResetPasswordModel from '../models/resetPassword';
-import UserModel from '../models/users';
-import { SALT_ROUNDS_PASSWORD } from '../enviroments/app.enviroment';
+import ResetPasswordModel from '../models/resetPassword.model';
+import UserModel from '../models/users.model';
 import { findUserByEmail } from './users.service';
 
 const createResetPassword = async (email: string) => {

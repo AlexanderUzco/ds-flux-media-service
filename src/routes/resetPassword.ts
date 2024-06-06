@@ -2,7 +2,7 @@ import { Router } from 'express';
 import {
   createNewPassword,
   requestResetPassword,
-} from '../controllers/resetPassword';
+} from '../controllers/resetPassword.controller';
 
 const router = Router();
 

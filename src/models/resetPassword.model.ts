@@ -23,7 +23,7 @@ ResetPasswordSchema.methods.generateResetToken = function () {
 };
 
 const ResetPasswordModel = model<ResetPassword>(
-  'resetPassword',
+  'ResetPassword',
   ResetPasswordSchema
 );
 

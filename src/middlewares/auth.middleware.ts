@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import asyncHandler from 'express-async-handler';
 import { AuthenticationError } from './error.middleware';
-import UserModel from '../models/users';
+import UserModel from '../models/users.model';
 import { Role } from '../interfaces/user.interface';
 
 const authenticate = (roles?: Role[]) =>

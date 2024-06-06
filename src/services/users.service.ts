@@ -1,5 +1,5 @@
 import { User } from '../interfaces/user.interface';
-import UserModel from '../models/users';
+import UserModel from '../models/users.model';
 
 const findUserByEmail = async (email: string) => {
   const user = await UserModel.findOne({ email });

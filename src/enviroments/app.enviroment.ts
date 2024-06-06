@@ -1,14 +1,10 @@
 import 'dotenv/config';
-import os from 'os';
 
 const PORT = process.env.PORT || 3000;
 
 const DB_URI = (process.env.DB_URI as string) || undefined;
 
 const JWT_SECRET = (process.env.JWT_SECRET as string) || undefined;
-
-const RESET_PASSWORD_SECRET =
-  (process.env.RESET_PASSWORD_SECRET as string) || undefined;
 
 const SALT_ROUNDS_PASSWORD =
   (process.env.SALT_ROUNDS_PASSWORD &&
@@ -24,7 +20,6 @@ export {
   PORT,
   DB_URI,
   JWT_SECRET,
-  RESET_PASSWORD_SECRET,
   SALT_ROUNDS_PASSWORD,
   EMAIL_HOST,
   EMAIL_PORT,
