@@ -10,6 +10,7 @@ const FilesItemSchema = new Schema<FilesItem>(
       required: true,
     },
     url: { type: String, required: true },
+    ref: { type: String, required: true },
     createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   },
   {

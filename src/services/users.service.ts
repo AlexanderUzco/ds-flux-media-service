@@ -20,6 +20,10 @@ const signinUserBase = async (user: User) => {
     throw new Error('User already exists');
   }
 
+  if (role === 'ADMIN') {
+    throw new Error('User not allowed to create admin users');
+  }
+
   const userData = await UserModel.create({
     username,
     email,

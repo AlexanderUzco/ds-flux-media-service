@@ -7,6 +7,8 @@ import {
   getContentItem,
   updateContentItem,
   getContentItems,
+  getContentItemByUserID,
+  getTotalItemsSummary,
 } from '../services/contentItem.service';
 
 const getContentItemRequest = async (req: Request, res: Response) => {
@@ -28,7 +30,24 @@ const getContentItemRequest = async (req: Request, res: Response) => {
 
 const getContentItemsRequest = async (req: Request, res: Response) => {
   try {
-    const contentItems = await getContentItems();
+    const contentItemsRes = await getContentItems();
+
+    if (!contentItemsRes) throw new Error('Error getting contentItems');
+
+    res.status(200).send({
+      message: 'ContentItems found',
+      ...contentItemsRes,
+    });
+  } catch (error) {
+    handleErrorHttp(res, 'Error getting contentItems', error);
+  }
+};
+
+const getContentItemByUserIDRequest = async (req: Request, res: Response) => {
+  try {
+    const { userID } = req.params;
+
+    const contentItems = await getContentItemByUserID(userID);
 
     if (!contentItems) throw new Error('Error getting contentItems');
 
@@ -90,10 +109,28 @@ const deleteContentItemRequest = async (req: Request, res: Response) => {
   }
 };
 
+const getTotalItemsSummaryRequest = async (req: Request, res: Response) => {
+  try {
+    console.log('getTotalItemsSummaryRequest');
+    const totalItemsSummary = await getTotalItemsSummary();
+
+    if (!totalItemsSummary) throw new Error('Error getting totalItemsSummary');
+
+    res.status(200).send({
+      message: 'TotalItemsSummary found',
+      totalItemsSummary,
+    });
+  } catch (error) {
+    handleErrorHttp(res, 'Error deleting contentItem', error);
+  }
+};
+
 export {
   getContentItemRequest,
   getContentItemsRequest,
   createContentItemRequest,
   updateContentItemRequest,
   deleteContentItemRequest,
+  getContentItemByUserIDRequest,
+  getTotalItemsSummaryRequest,
 };

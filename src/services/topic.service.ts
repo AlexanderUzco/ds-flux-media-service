@@ -4,13 +4,17 @@ import TopicModel from '../models/topic.model';
 import { Content } from '../interfaces/contentItem.interface';
 
 const getTopics = async () => {
-  const topics = await TopicModel.find();
+  const topics = await TopicModel.find()
+    .populate('categoryID')
+    .populate('createdBy');
 
   return topics;
 };
 
 const getTopic = async (id: string | Schema.Types.ObjectId) => {
-  const topic = await TopicModel.findById(id);
+  const topic = await TopicModel.findById(id)
+    .populate('categoryID')
+    .populate('createdBy');
 
   if (!topic) {
     throw new Error('Topic not found');
@@ -68,6 +72,18 @@ const deleteTopic = async (id: string) => {
   return topic;
 };
 
+const deleteTopics = async (ids: string[]) => {
+  const topics = await TopicModel.deleteMany({ _id: { $in: ids } });
+
+  return topics;
+};
+
+const deleteTopicsByCategory = async (categoryID: string) => {
+  const topics = await TopicModel.deleteMany({ categoryID });
+
+  return topics;
+};
+
 const validateContentByTopic = async (
   topicID: string | Schema.Types.ObjectId,
   content: Content
@@ -84,11 +100,6 @@ const validateContentByTopic = async (
   if (content.images && !image) {
     throw new Error('Content does not allow image');
   }
-
-  if (content.documents && !document) {
-    throw new Error('Content does not allow document');
-  }
-
   if (content.videos && !video) {
     throw new Error('Content does not allow video');
   }
@@ -104,5 +115,7 @@ export {
   createTopic,
   updateTopic,
   deleteTopic,
+  deleteTopics,
+  deleteTopicsByCategory,
   validateContentByTopic,
 };

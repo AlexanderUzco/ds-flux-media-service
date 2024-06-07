@@ -6,22 +6,38 @@ import { getTopic, validateContentByTopic } from './topic.service';
 const getContentItems = async () => {
   const contentItems = await ContentItemModel.find()
     .populate('createdBy')
-    .populate('topicID')
+    .populate({
+      path: 'topicID',
+      populate: { path: 'categoryID' },
+    })
     .populate('content.videos')
-    .populate('content.images')
-    .populate('content.documents');
+    .populate('content.images');
 
-  return contentItems;
+  const totalItemsSummary = {
+    totalItems: contentItems.length,
+    totalImages: 0,
+    totalVideos: 0,
+    totalText: 0,
+  };
+
+  contentItems.forEach((contentItem) => {
+    totalItemsSummary.totalImages += contentItem.content.images.length;
+    totalItemsSummary.totalVideos += contentItem.content.videos.length;
+    totalItemsSummary.totalText += 1;
+  });
+
+  return { contentItems, totalItemsSummary };
 };
 
 const getContentItem = async (id: string) => {
-  // Get content item by id and populate createdBy field, topicID field, and content field
   const contentItem = await ContentItemModel.findById(id)
     .populate('createdBy')
-    .populate('topicID')
+    .populate({
+      path: 'topicID',
+      populate: { path: 'categoryID' },
+    })
     .populate('content.videos')
-    .populate('content.images')
-    .populate('content.documents');
+    .populate('content.images');
 
   if (!contentItem) {
     throw new Error('ContentItem not found');
@@ -30,8 +46,48 @@ const getContentItem = async (id: string) => {
   return contentItem;
 };
 
+const getContentItemByUserID = async (userID: string) => {
+  const contentItems = await ContentItemModel.find({ createdBy: userID })
+    .populate('createdBy')
+    .populate('topicID')
+    .populate('content.videos')
+    .populate('content.images');
+
+  return contentItems;
+};
+
+const getTotalItemsSummary = async () => {
+  //Get all content (images count, videos count, text count) from items
+  const contentItems = await ContentItemModel.find()
+    .populate('createdBy')
+    .populate('topicID')
+    .populate('content.videos')
+    .populate('content.images');
+
+  if (!contentItems) {
+    throw new Error('ContentItems not found');
+  }
+
+  console.log({ contentItems });
+
+  const totalItemsSummary = {
+    totalItems: contentItems.length,
+    totalImages: 0,
+    totalVideos: 0,
+    totalText: 0,
+  };
+
+  contentItems.forEach((contentItem) => {
+    totalItemsSummary.totalImages += contentItem.content.images.length;
+    totalItemsSummary.totalVideos += contentItem.content.videos.length;
+    totalItemsSummary.totalText += 1;
+  });
+
+  return totalItemsSummary;
+};
+
 const createContentItem = async (contentItem: ContentItem) => {
-  const { title, description, topicID, content, createdBy } = contentItem;
+  const { title, topicID, content, createdBy } = contentItem;
 
   const contentItemExists = await ContentItemModel.findOne({ title }).populate(
     'topicID'
@@ -51,7 +107,6 @@ const createContentItem = async (contentItem: ContentItem) => {
 
   const contentItemData = await ContentItemModel.create({
     title,
-    description,
     topicID,
     content,
     createdBy,
@@ -61,7 +116,7 @@ const createContentItem = async (contentItem: ContentItem) => {
 };
 
 const updateContentItem = async (contentItem: ContentItem) => {
-  const { id, title, description, topicID, content } = contentItem;
+  const { id, title, topicID, content } = contentItem;
 
   const contentItemExists = await ContentItemModel.findById(id);
 
@@ -70,7 +125,6 @@ const updateContentItem = async (contentItem: ContentItem) => {
   }
 
   contentItemExists.title = title;
-  contentItemExists.description = description;
   contentItemExists.topicID = topicID;
   contentItemExists.content = content;
 
@@ -86,11 +140,7 @@ const deleteContentItem = async (id: string) => {
     throw new Error('ContentItem not found');
   }
 
-  await FilesItemModel.deleteMany({ _id: { $in: contentItem.content.videos } });
   await FilesItemModel.deleteMany({ _id: { $in: contentItem.content.images } });
-  await FilesItemModel.deleteMany({
-    _id: { $in: contentItem.content.documents },
-  });
 
   return contentItem;
 };
@@ -101,4 +151,6 @@ export {
   createContentItem,
   updateContentItem,
   deleteContentItem,
+  getContentItemByUserID,
+  getTotalItemsSummary,
 };

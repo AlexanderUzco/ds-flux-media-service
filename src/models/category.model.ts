@@ -6,6 +6,7 @@ const CategorySchema = new Schema<Category>(
     name: { type: String, required: true, unique: true },
     imageUrl: { type: String, required: true },
     description: { type: String, required: true },
+    ref: { type: String, required: true },
     createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
   },
   {

@@ -60,7 +60,12 @@ const authenticateUser = async (req: Request, res: Response) => {
 
     if (!userData) throw new Error('User not found');
 
-    res.status(200).json(userData);
+    res.status(200).json({
+      id: userData.id,
+      email: userData.email,
+      username: userData.username,
+      role: userData.role,
+    });
   } catch (error) {
     handleErrorHttp(res, 'Error authenticateUser user');
   }

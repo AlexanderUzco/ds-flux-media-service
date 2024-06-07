@@ -24,7 +24,7 @@ const getFilesItem = async (id: string) => {
 };
 
 const createFilesItem = async (filesItem: FilesItem) => {
-  const { name, type, url, createdBy } = filesItem;
+  const { name, type, url, ref, createdBy } = filesItem;
 
   const filesItemExists = await FilesItemModel.findOne({ name });
 
@@ -37,9 +37,16 @@ const createFilesItem = async (filesItem: FilesItem) => {
     type,
     url,
     createdBy,
+    ref,
   });
 
   return filesItemData;
+};
+
+const createFilesItems = async (filesItems: FilesItem[]) => {
+  const filesItemsData = await FilesItemModel.insertMany(filesItems);
+
+  return filesItemsData;
 };
 
 const updateFilesItem = async (filesItem: FilesItem) => {
@@ -81,6 +88,7 @@ export {
   getFilesItemByIds,
   getFilesItem,
   createFilesItem,
+  createFilesItems,
   updateFilesItem,
   deleteFilesItem,
   deleteFilesItems,

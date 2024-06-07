@@ -5,7 +5,6 @@ const AllowContentSchema = new Schema(
   {
     text: { type: Boolean, required: true },
     image: { type: Boolean, required: true },
-    document: { type: Boolean, required: true },
     video: { type: Boolean, required: true },
   },
   { _id: false }

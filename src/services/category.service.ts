@@ -1,14 +1,15 @@
 import { Category } from '../interfaces/category.interface';
 import CategoryModel from '../models/category.model';
+import { deleteTopicsByCategory } from './topic.service';
 
 const getCategories = async () => {
-  const categories = await CategoryModel.find();
+  const categories = await CategoryModel.find().populate('createdBy');
 
   return categories;
 };
 
 const getCategory = async (id: string) => {
-  const category = await CategoryModel.findById(id);
+  const category = await CategoryModel.findById(id).populate('createdBy');
 
   if (!category) {
     throw new Error('Category not found');
@@ -18,7 +19,7 @@ const getCategory = async (id: string) => {
 };
 
 const createCategory = async (category: Category) => {
-  const { name, imageUrl, description, createdBy } = category;
+  const { name, imageUrl, description, createdBy, ref } = category;
 
   const categoryExists = await CategoryModel.findOne({ name });
 
@@ -30,6 +31,7 @@ const createCategory = async (category: Category) => {
     name,
     imageUrl,
     description,
+    ref,
     createdBy,
   });
 
@@ -37,7 +39,7 @@ const createCategory = async (category: Category) => {
 };
 
 const updateCategory = async (category: Category) => {
-  const { id, name, imageUrl, description } = category;
+  const { id, name, imageUrl, description, ref } = category;
 
   const categoryExists = await CategoryModel.findById(id);
 
@@ -48,6 +50,7 @@ const updateCategory = async (category: Category) => {
   categoryExists.name = name;
   categoryExists.imageUrl = imageUrl;
   categoryExists.description = description;
+  categoryExists.ref = ref;
 
   await categoryExists.save();
 
@@ -60,6 +63,13 @@ const deleteCategory = async (id: string) => {
   if (!category) {
     throw new Error('Category not found');
   }
+
+  // Delete all content items associated with the category
+
+  // Topics
+  // Delete all topics associated with the category
+
+  //await deleteTopicsByCategory(id);
 
   return category;
 };
