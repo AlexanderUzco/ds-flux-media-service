@@ -11,7 +11,7 @@ const findUserByEmail = async (email: string) => {
   return user;
 };
 
-const signinUserBase = async (user: User) => {
+const signupUserBase = async (user: User) => {
   const { email, password, username, role } = user;
 
   const userExists = await UserModel.findOne({ email });
@@ -64,7 +64,7 @@ const verifyAuthenticatedUser = async (userID: string | undefined) => {
 };
 
 export {
-  signinUserBase,
+  signupUserBase,
   checkExistUser,
   verifyAuthenticatedUser,
   findUserByEmail,

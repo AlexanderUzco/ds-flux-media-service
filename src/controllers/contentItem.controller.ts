@@ -111,7 +111,6 @@ const deleteContentItemRequest = async (req: Request, res: Response) => {
 
 const getTotalItemsSummaryRequest = async (req: Request, res: Response) => {
   try {
-    console.log('getTotalItemsSummaryRequest');
     const totalItemsSummary = await getTotalItemsSummary();
 
     if (!totalItemsSummary) throw new Error('Error getting totalItemsSummary');

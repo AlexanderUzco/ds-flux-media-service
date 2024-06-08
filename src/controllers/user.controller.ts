@@ -2,16 +2,16 @@ import { Request, Response } from 'express';
 import { handleErrorHttp } from '../utils/errors';
 import {
   checkExistUser,
-  signinUserBase,
+  signupUserBase,
   verifyAuthenticatedUser,
 } from '../services/users.service';
 import { clearToken, generateToken } from '../utils/auth';
 
-const signinUser = async (req: Request, res: Response) => {
+const signupUser = async (req: Request, res: Response) => {
   try {
     const { body } = req;
 
-    const responseSignUser = await signinUserBase(body);
+    const responseSignUser = await signupUserBase(body);
 
     if (!responseSignUser) throw new Error('Error creating user');
 
@@ -25,7 +25,7 @@ const signinUser = async (req: Request, res: Response) => {
   }
 };
 
-const signupUser = async (req: Request, res: Response) => {
+const signinUser = async (req: Request, res: Response) => {
   try {
     const { body } = req;
 

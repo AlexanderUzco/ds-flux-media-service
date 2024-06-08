@@ -68,8 +68,6 @@ const getTotalItemsSummary = async () => {
     throw new Error('ContentItems not found');
   }
 
-  console.log({ contentItems });
-
   const totalItemsSummary = {
     totalItems: contentItems.length,
     totalImages: 0,
