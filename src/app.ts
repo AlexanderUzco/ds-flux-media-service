@@ -17,7 +17,7 @@ declare global {
 
 const app = express();
 
-// Middlewares
+// Middlewares:
 app.use(errorHandler);
 app.use(express.json());
 app.use(cors());
