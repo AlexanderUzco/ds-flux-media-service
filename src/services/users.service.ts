@@ -63,9 +63,16 @@ const verifyAuthenticatedUser = async (userID: string | undefined) => {
   return userData;
 };
 
+const findUserByUsername = async (username: string) => {
+  const user = await UserModel.findOne({ username });
+
+  return user;
+};
+
 export {
   signupUserBase,
   checkExistUser,
   verifyAuthenticatedUser,
   findUserByEmail,
+  findUserByUsername,
 };

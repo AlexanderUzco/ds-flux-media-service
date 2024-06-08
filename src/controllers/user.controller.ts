@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { handleErrorHttp } from '../utils/errors';
 import {
   checkExistUser,
+  findUserByUsername,
   signupUserBase,
   verifyAuthenticatedUser,
 } from '../services/users.service';
@@ -71,4 +72,28 @@ const authenticateUser = async (req: Request, res: Response) => {
   }
 };
 
-export { signupUser, signinUser, signoutUser, authenticateUser };
+const verifyUniqueUsernameRequest = async (req: Request, res: Response) => {
+  try {
+    const { username } = req.body;
+
+    const user = await findUserByUsername(username);
+
+    if (user) {
+      res
+        .status(200)
+        .json({ message: 'Username already exists', exists: true });
+    } else {
+      res.status(200).json({ message: 'Username available', exists: false });
+    }
+  } catch (error) {
+    handleErrorHttp(res, 'Error verifyUniqueUsernameRequest', error);
+  }
+};
+
+export {
+  signupUser,
+  signinUser,
+  signoutUser,
+  authenticateUser,
+  verifyUniqueUsernameRequest,
+};
