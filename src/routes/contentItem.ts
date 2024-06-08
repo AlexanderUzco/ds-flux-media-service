@@ -16,9 +16,9 @@ const router = Router();
 
 router.get('/', getContentItemsRequest);
 
-router.get('/:contentItemID', getContentItemRequest);
-
 router.get('/total-items-summary', getTotalItemsSummaryRequest);
+
+router.get('/:contentItemID', getContentItemRequest);
 
 router.post(
   '/get-by-user/:userID',

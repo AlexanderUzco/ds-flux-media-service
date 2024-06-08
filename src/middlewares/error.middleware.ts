@@ -11,6 +11,8 @@ const errorHandler = (
   } else {
     res.status(500).json({ message: 'Internal Server Error' });
   }
+
+  console.log(err);
 };
 
 class AuthenticationError extends Error {
