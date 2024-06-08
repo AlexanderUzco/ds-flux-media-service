@@ -18,4 +18,8 @@ readdirSync(PATH_ROUTER).forEach((filename) => {
   });
 });
 
+router.get('/', (req, res) => {
+  res.send('Flux Media API is running');
+});
+
 export { router };

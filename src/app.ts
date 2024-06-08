@@ -23,10 +23,6 @@ app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
-router.get('/', (req, res) => {
-  res.send('Flux Media API is running');
-});
-
 app.use(router);
 
 // Connect to database
