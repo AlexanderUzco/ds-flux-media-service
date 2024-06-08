@@ -7,7 +7,7 @@
     "dev": "nodemon ./src/app.ts",
     "seed:admin": "ts-node ./src/seeders/userSeeder.ts",
     "build": "tsc",
-    "start": "npm run build:clean && node ./dist/app.js",
+    "start": "node ./dist/app.js",
     "build:clean": "rm -rf dist && tsc"
   },
   "keywords": [],
