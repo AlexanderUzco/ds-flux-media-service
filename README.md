@@ -1,6 +1,4 @@
-# ds-flux-media-service
-
-# Express + Typescript + MongoDB
+# Flex Media Service (Express + Typescript + MongoDB)
 
 ## Variables de Entorno
 
