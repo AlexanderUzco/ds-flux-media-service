@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.router = void 0;
+const express_1 = require("express");
+const contentItem_controller_1 = require("../controllers/contentItem.controller");
+const auth_middleware_1 = require("../middlewares/auth.middleware");
+const router = (0, express_1.Router)();
+exports.router = router;
+router.get('/', contentItem_controller_1.getContentItemsRequest);
+router.get('/:contentItemID', contentItem_controller_1.getContentItemRequest);
+router.get('/total-items-summary', contentItem_controller_1.getTotalItemsSummaryRequest);
+router.post('/get-by-user/:userID', (0, auth_middleware_1.authenticate)(), contentItem_controller_1.getContentItemByUserIDRequest);
+router.post('/', (0, auth_middleware_1.authenticate)(['ADMIN', 'WRITER']), contentItem_controller_1.createContentItemRequest);
+router.put('/:contentItemID', (0, auth_middleware_1.authenticate)(['ADMIN', 'WRITER']), contentItem_controller_1.updateContentItemRequest);
+router.delete('/:contentItemID', (0, auth_middleware_1.authenticate)(['ADMIN', 'WRITER']), contentItem_controller_1.deleteContentItemRequest);
