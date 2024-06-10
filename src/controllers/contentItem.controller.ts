@@ -79,7 +79,11 @@ const createContentItemRequest = async (req: Request, res: Response) => {
 const updateContentItemRequest = async (req: Request, res: Response) => {
   try {
     const { body } = req;
-    const updatedContentItem = await updateContentItem(body);
+    const { contentItemID } = req.params;
+    const updatedContentItem = await updateContentItem({
+      ...body,
+      id: contentItemID,
+    });
 
     if (!updatedContentItem) throw new Error('Error updating contentItem');
 
