@@ -9,24 +9,9 @@ const getContentItems = async () => {
     .populate({
       path: 'topicID',
       populate: { path: 'categoryID' },
-    })
-    .populate('content.videos')
-    .populate('content.images');
+    });
 
-  const totalItemsSummary = {
-    totalItems: contentItems.length,
-    totalImages: 0,
-    totalVideos: 0,
-    totalText: 0,
-  };
-
-  contentItems.forEach((contentItem) => {
-    totalItemsSummary.totalImages += contentItem.content.images.length;
-    totalItemsSummary.totalVideos += contentItem.content.videos.length;
-    totalItemsSummary.totalText += 1;
-  });
-
-  return { contentItems, totalItemsSummary };
+  return { contentItems };
 };
 
 const getContentItem = async (id: string) => {
@@ -35,9 +20,7 @@ const getContentItem = async (id: string) => {
     .populate({
       path: 'topicID',
       populate: { path: 'categoryID' },
-    })
-    .populate('content.videos')
-    .populate('content.images');
+    });
 
   if (!contentItem) {
     throw new Error('ContentItem not found');
@@ -49,9 +32,10 @@ const getContentItem = async (id: string) => {
 const getContentItemByUserID = async (userID: string) => {
   const contentItems = await ContentItemModel.find({ createdBy: userID })
     .populate('createdBy')
-    .populate('topicID')
-    .populate('content.videos')
-    .populate('content.images');
+    .populate({
+      path: 'topicID',
+      populate: { path: 'categoryID' },
+    });
 
   return contentItems;
 };
@@ -60,28 +44,30 @@ const getTotalItemsSummary = async () => {
   //Get all content (images count, videos count, text count) from items
   const contentItems = await ContentItemModel.find()
     .populate('createdBy')
-    .populate('topicID')
-    .populate('content.videos')
-    .populate('content.images');
+    .populate('topicID');
 
   if (!contentItems) {
     throw new Error('ContentItems not found');
   }
 
-  const totalItemsSummary = {
-    totalItems: contentItems.length,
-    totalImages: 0,
-    totalVideos: 0,
-    totalText: 0,
-  };
+  const count = contentItems.reduce(
+    (acc, contentItem) => {
+      const { type, data } = contentItem.content;
 
-  contentItems.forEach((contentItem) => {
-    totalItemsSummary.totalImages += contentItem.content.images.length;
-    totalItemsSummary.totalVideos += contentItem.content.videos.length;
-    totalItemsSummary.totalText += 1;
-  });
+      if (type === 'image') {
+        acc.images += data.length;
+      } else if (type === 'video') {
+        acc.videos += data.length;
+      } else if (type === 'text') {
+        acc.text += 1;
+      }
 
-  return totalItemsSummary;
+      return acc;
+    },
+    { contentItems: contentItems.length, images: 0, videos: 0, text: 0 }
+  );
+
+  return count;
 };
 
 const createContentItem = async (contentItem: ContentItem) => {
@@ -138,7 +124,9 @@ const deleteContentItem = async (id: string) => {
     throw new Error('ContentItem not found');
   }
 
-  await FilesItemModel.deleteMany({ _id: { $in: contentItem.content.images } });
+  if (contentItem.content.type === 'image') {
+    await FilesItemModel.deleteMany({ _id: { $in: contentItem.content.data } });
+  }
 
   return contentItem;
 };

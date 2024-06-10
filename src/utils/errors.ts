@@ -34,10 +34,6 @@ const handleErrorHttp = (res: Response, message: string, errorRaw?: any) => {
       message: errorRaw.message,
     });
   }
-
-  res.status(500).send({
-    message: message,
-  });
 };
 
 export { handleErrorHttp };

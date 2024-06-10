@@ -94,18 +94,10 @@ const validateContentByTopic = async (
     throw new Error('Topic does not allow content');
   }
 
-  // Verify is content is allowed by topic
-  const { image, document, video, text } = topic.allowContent;
+  const contentAllowed = topic.allowContent[content.type];
 
-  if (content.images && !image) {
-    throw new Error('Content does not allow image');
-  }
-  if (content.videos && !video) {
-    throw new Error('Content does not allow video');
-  }
-
-  if (content.text && !text) {
-    throw new Error('Content does not allow text');
+  if (!contentAllowed) {
+    throw new Error(`Content does not allow ${content.type}`);
   }
 };
 

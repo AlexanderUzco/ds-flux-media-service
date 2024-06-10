@@ -1,10 +1,31 @@
 import { Document, Schema } from 'mongoose';
+import { TopicAllowContent } from './topic.interface';
 
-export interface Content {
-  text: string;
-  videos: Schema.Types.ObjectId[];
-  images: Schema.Types.ObjectId[];
+interface BaseContent {
+  type: TopicAllowContent;
 }
+
+export interface ImageContentData {
+  url: string;
+  ref: string;
+}
+
+interface TextContent extends BaseContent {
+  type: 'text';
+  data: string;
+}
+
+interface ImageContent extends BaseContent {
+  type: 'image';
+  data: ImageContentData[];
+}
+
+interface VideoContent extends BaseContent {
+  type: 'video';
+  data: string[];
+}
+
+export type Content = TextContent | ImageContent | VideoContent;
 
 export interface ContentItem extends Document {
   title: string;

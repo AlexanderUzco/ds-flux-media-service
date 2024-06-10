@@ -1,9 +1,10 @@
 import { Schema, Document } from 'mongoose';
 
+export type TopicAllowContent = 'text' | 'image' | 'video';
+
 export interface AllowContent {
   text: boolean;
   image: boolean;
-  document: boolean;
   video: boolean;
 }
 

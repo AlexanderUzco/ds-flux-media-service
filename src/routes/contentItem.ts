@@ -20,9 +20,9 @@ router.get('/total-items-summary', getTotalItemsSummaryRequest);
 
 router.get('/:contentItemID', getContentItemRequest);
 
-router.post(
+router.get(
   '/get-by-user/:userID',
-  authenticate(),
+  authenticate(['ADMIN', 'WRITER']),
   getContentItemByUserIDRequest
 );
 

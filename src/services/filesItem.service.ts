@@ -26,12 +26,6 @@ const getFilesItem = async (id: string) => {
 const createFilesItem = async (filesItem: FilesItem) => {
   const { name, type, url, ref, createdBy } = filesItem;
 
-  const filesItemExists = await FilesItemModel.findOne({ name });
-
-  if (filesItemExists) {
-    throw new Error('FilesItem already exists');
-  }
-
   const filesItemData = await FilesItemModel.create({
     name,
     type,

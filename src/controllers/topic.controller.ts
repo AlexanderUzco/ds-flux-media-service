@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { handleErrorHttp } from '../utils/errors';
-
 import {
   createTopic,
   deleteTopic,

@@ -32,8 +32,6 @@ const signinUser = async (req: Request, res: Response) => {
 
     const responseExistUser = await checkExistUser(body);
 
-    if (!responseExistUser) throw new Error('User dont exist');
-
     const { id, email, username, role } = responseExistUser;
 
     const token = generateToken(res, id);
