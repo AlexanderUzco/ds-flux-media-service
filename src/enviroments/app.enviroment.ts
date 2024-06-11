@@ -1,6 +1,7 @@
 import 'dotenv/config';
 
 const PORT = process.env.PORT || 3000;
+const ENV = process.env.NODE_ENV || 'DEV';
 
 const DB_URI = (process.env.DB_URI as string) || undefined;
 
@@ -18,6 +19,7 @@ const EMAIL_USER = process.env.EMAIL_USER || '';
 
 export {
   PORT,
+  ENV,
   DB_URI,
   JWT_SECRET,
   SALT_ROUNDS_PASSWORD,
