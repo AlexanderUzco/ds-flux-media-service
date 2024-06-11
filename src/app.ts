@@ -20,7 +20,13 @@ const app = express();
 // Middlewares:
 app.use(errorHandler);
 app.use(express.json());
-app.use(cors());
+// allow any request from any origin
+app.use(
+  cors({
+    origin: '*',
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 
 app.use(router);
