@@ -33,7 +33,12 @@ const app = express();
 app.use(errorHandler);
 app.use(express.json());
 // allow any request from any origin
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: '*',
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 
 app.use(router);
