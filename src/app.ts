@@ -18,7 +18,11 @@ declare global {
 
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
+    console.log(origin);
     if (!origin || CORS_ALLOWED_ORIGINS[ENV].includes(origin)) {
+      console.log(origin);
+      console.log(CORS_ALLOWED_ORIGINS);
+      console.log(ENV);
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -33,12 +37,7 @@ const app = express();
 app.use(errorHandler);
 app.use(express.json());
 // allow any request from any origin
-app.use(
-  cors({
-    origin: '*',
-    credentials: true,
-  })
-);
+app.use(cors(corsOptions));
 app.use(cookieParser());
 
 app.use(router);
