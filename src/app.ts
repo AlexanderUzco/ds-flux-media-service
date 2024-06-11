@@ -19,6 +19,8 @@ declare global {
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
     console.log(origin);
+    console.log(CORS_ALLOWED_ORIGINS);
+    console.log(ENV);
     if (!origin || CORS_ALLOWED_ORIGINS[ENV].includes(origin)) {
       console.log(origin);
       console.log(CORS_ALLOWED_ORIGINS);
